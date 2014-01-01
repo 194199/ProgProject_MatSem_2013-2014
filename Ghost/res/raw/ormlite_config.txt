@@ -1,0 +1,29 @@
+#
+# generated on 2013/12/28 04:45:07
+#
+# --table-start--
+dataClass=ghost.bankaccountclient.db.AccountRow
+tableName=accounts
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=accountNumber
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=ipAddress
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=port
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=pattern
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
