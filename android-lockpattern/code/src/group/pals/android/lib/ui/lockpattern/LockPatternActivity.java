@@ -284,7 +284,7 @@ public class LockPatternActivity extends Activity {
      * FIELDS
      */
     private int mMaxRetry;
-    private boolean mAutoSave;
+ //   private boolean mAutoSave;
     private IEncrypter mEncrypter;
     private int mMinWiredDots;
     private ButtonOkCommand mBtnOkCmd;
@@ -297,7 +297,7 @@ public class LockPatternActivity extends Activity {
     private TextView mTextInfo;
     private LockPatternView mLockPatternView;
     private View mFooter;
-    private Button mBtnCancel;
+  //  private Button mBtnCancel;
     private Button mBtnConfirm;
 
     /**
@@ -320,7 +320,7 @@ public class LockPatternActivity extends Activity {
 
         mMinWiredDots = DisplayPrefs.getMinWiredDots(this);
         mMaxRetry = DisplayPrefs.getMaxRetry(this);
-        mAutoSave = SecurityPrefs.isAutoSavePattern(this);
+    //    mAutoSave = SecurityPrefs.isAutoSavePattern(this);
 
         /*
          * Encrypter.
@@ -393,7 +393,6 @@ public class LockPatternActivity extends Activity {
         mLockPatternView = (LockPatternView) findViewById(R.id.alp_view_lock_pattern);
 
         mFooter = findViewById(R.id.alp_viewgroup_footer);
-        mBtnCancel = (Button) findViewById(R.id.alp_button_cancel);
         mBtnConfirm = (Button) findViewById(R.id.alp_button_confirm);
 
         /*
@@ -442,10 +441,8 @@ public class LockPatternActivity extends Activity {
          */
 
         if (ACTION_CREATE_PATTERN.equals(getIntent().getAction())) {
-            mBtnCancel.setOnClickListener(mBtnCancelOnClickListener);
             mBtnConfirm.setOnClickListener(mBtnConfirmOnClickListener);
 
-            mBtnCancel.setVisibility(View.VISIBLE);
             mFooter.setVisibility(View.VISIBLE);
 
             if (infoText != null)
@@ -533,9 +530,10 @@ public class LockPatternActivity extends Activity {
                 if (mEncrypter != null)
                     okey = pattern.equals(mEncrypter.decrypt(this,
                             currentPattern));
-                else
-                    okey = Arrays.equals(currentPattern, LockPatternUtils
-                            .patternToSha1(pattern).toCharArray());
+                else {
+                	char[] tab = LockPatternUtils.patternToSha1(pattern).toCharArray();
+                    okey = Arrays.equals(currentPattern, tab);
+                }
             } else
                 okey = false;
         }// ACTION_COMPARE_PATTERN
@@ -599,10 +597,7 @@ public class LockPatternActivity extends Activity {
             }
         } else {
             getIntent().putExtra(
-                    EXTRA_PATTERN,
-                    mEncrypter != null ? mEncrypter.encrypt(this, pattern)
-                            : LockPatternUtils.patternToSha1(pattern)
-                                    .toCharArray());
+                    EXTRA_PATTERN, LockPatternUtils.patternToSha1(pattern).toCharArray());
             mTextInfo.setText(R.string.alp_msg_pattern_recorded);
             mBtnConfirm.setEnabled(true);
         }
@@ -677,9 +672,9 @@ public class LockPatternActivity extends Activity {
 
         setResult(resultCode, mIntentResult);
 
-        /*
-         * ResultReceiver
-         */
+       
+        // ResultReceiver
+       
         ResultReceiver receiver = getIntent().getParcelableExtra(
                 EXTRA_RESULT_RECEIVER);
         if (receiver != null) {
@@ -691,9 +686,8 @@ public class LockPatternActivity extends Activity {
             receiver.send(resultCode, resultBundle);
         }
 
-        /*
-         * PendingIntent
-         */
+         // PendingIntent
+      
         PendingIntent pi = getIntent().getParcelableExtra(
                 EXTRA_PENDING_INTENT_CANCELLED);
         if (pi != null) {
@@ -783,13 +777,13 @@ public class LockPatternActivity extends Activity {
         }// onPatternCellAdded()
     };// mLockPatternViewListener
 
-    private final View.OnClickListener mBtnCancelOnClickListener = new View.OnClickListener() {
+   /* private final View.OnClickListener mBtnCancelOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
             finishWithNegativeResult(RESULT_CANCELED);
         }// onClick()
-    };// mBtnCancelOnClickListener
+    };// mBtnCancelOnClickListener*/
 
     private final View.OnClickListener mBtnConfirmOnClickListener = new View.OnClickListener() {
 
@@ -806,9 +800,9 @@ public class LockPatternActivity extends Activity {
                 } else {
                     final char[] pattern = getIntent().getCharArrayExtra(
                             EXTRA_PATTERN);
-                    if (mAutoSave)
+                 /*   if (mAutoSave)
                         SecurityPrefs.setPattern(LockPatternActivity.this,
-                                pattern);
+                                pattern);*/
                     finishWithResultOk(pattern);
                 }
             }// ACTION_CREATE_PATTERN
